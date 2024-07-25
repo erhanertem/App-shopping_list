@@ -121,13 +121,19 @@ function getItemsFromStorage() {
 	return itemsFromStorage;
 }
 
-// Event Listeners
-itemForm.addEventListener('submit', addItem);
-itemList.addEventListener('click', deleteItem);
-btnClear.addEventListener('click', deleteAllItems);
-itemFilter.addEventListener('input', filterItems);
-btnReset.addEventListener('click', getList);
-document.addEventListener('DOMContentLoaded', displayItems);
+// APP INITIALIZER
+function init() {
+	// Event Listeners
+	itemForm.addEventListener('submit', addItem);
+	itemList.addEventListener('click', deleteItem);
+	btnClear.addEventListener('click', deleteAllItems);
+	itemFilter.addEventListener('input', filterItems);
+	btnReset.addEventListener('click', getList);
+	document.addEventListener('DOMContentLoaded', displayItems);
 
-btnReset.style.display = 'none';
-renderChangesUI();
+	// INITIAL FILTER SEARCH RESET BTN CSS STATE
+	btnReset.style.display = 'none';
+	// RENDER UI ELEMENTS (FILTER BAR & RESET BUTTON)
+	renderChangesUI();
+}
+init();
