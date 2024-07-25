@@ -58,10 +58,24 @@ function addItemToStorage(item) {
 	localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 function deleteItem(e) {
-	console.log();
 	if (e.target.parentElement.classList.contains('remove-item')) {
-		e.target.closest('li').remove();
+		const removeItem = e.target.closest('li').textContent;
+		if (confirm('Are you sure?')) {
+			// Remove item from local storage and DOM
+			removeItemsFromStorage(removeItem);
+			e.target.closest('li').remove();
+			// Render changes to UI
+			renderChangesUI();
+		}
 	}
+}
+
+function removeItemsFromStorage(removeItem) {
+	// Get items from local storage
+	let items = getItemsFromStorage();
+	// Remove the item from the array and update the local storage
+	newItems = items.filter((el) => el !== removeItem);
+	localStorage.setItem('items', newItems);
 }
 
 function deleteAllItems() {
