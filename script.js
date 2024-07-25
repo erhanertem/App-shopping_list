@@ -2,6 +2,7 @@ const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const btnClear = document.getElementById('clear');
+const btnReset = document.getElementById('reset');
 const itemFilter = document.getElementById('filter');
 
 function createListItem(itemText) {
@@ -63,18 +64,39 @@ function renderChangesUI() {
 
 function filterItems(e) {
 	const filterValue = e.target.value.toLowerCase();
+	let listLength = itemList.children.length;
 	Array.from(itemList.children).filter((el) => {
 		if (el.firstChild.textContent.trim().toLowerCase().includes(filterValue)) {
-			el.style.display = 'flex';
+			el.style.display = '';
 		} else {
 			el.style.display = 'none';
+			--listLength;
+		}
+		if (listLength === 0) {
+			btnClear.style.display = 'none';
+			btnReset.style.display = 'block';
 		}
 	});
 }
+
+function getList() {
+	// Switch btns funcs
+	btnClear.style.display = 'block';
+	btnReset.style.display = 'none';
+
+	// Reload list form exisitng HTML
+	document.querySelectorAll('li').forEach((el) => (el.style.display = ''));
+
+	// Clear filter field
+	itemFilter.value = '';
+}
+
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', deleteItem);
 btnClear.addEventListener('click', deleteAllItems);
 itemFilter.addEventListener('input', filterItems);
+btnReset.addEventListener('click', getList);
 
+btnReset.style.display = 'none';
 renderChangesUI();
