@@ -5,21 +5,8 @@ const btnClear = document.getElementById('clear');
 const btnReset = document.getElementById('reset');
 const itemFilter = document.getElementById('filter');
 
-function createListItem(itemText) {
-	const li = document.createElement('li');
-	li.textContent = itemText;
-	const btn = document.createElement('button');
-	btn.classList.add('remove-item', 'btn-link', 'text-red');
-	const i = document.createElement('i');
-	i.classList.add('fa-solid', 'fa-xmark');
-	btn.append(i);
-	li.append(btn);
-	return li;
-}
-
 function addItem(e) {
 	e.preventDefault();
-
 	const itemText = itemInput.value.trim();
 	// GUARD CLAUSE
 	if (!itemText) {
@@ -27,14 +14,28 @@ function addItem(e) {
 		return;
 	}
 
-	// Append listItem to the list
-	itemList.append(createListItem(itemText));
+	// Add item to the list
+	addItemToDOM(itemText);
 
 	// Render changes to UI
 	renderChangesUI();
 
 	// Clear input field after submission
 	itemInput.value = '';
+}
+
+function addItemToDOM(item) {
+	const li = document.createElement('li');
+	li.textContent = item;
+	const btn = document.createElement('button');
+	btn.classList.add('remove-item', 'btn-link', 'text-red');
+	const i = document.createElement('i');
+	i.classList.add('fa-solid', 'fa-xmark');
+	btn.append(i);
+	li.append(btn);
+
+	// Append listItem to the list
+	itemList.append(li);
 }
 
 function deleteItem(e) {
