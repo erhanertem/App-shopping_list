@@ -5,6 +5,7 @@ const btnClear = document.getElementById('clear');
 const btnReset = document.getElementById('reset');
 const itemFilter = document.getElementById('filter');
 const formBtn = itemForm.querySelector('button');
+let isEditMode = false;
 
 function displayItems() {
 	// Get items from local storage
