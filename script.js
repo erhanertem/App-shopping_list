@@ -14,8 +14,10 @@ function addItem(e) {
 		return;
 	}
 
-	// Add item to the list
+	// Add item to the DOM
 	addItemToDOM(itemText);
+	// Add item to localstorage
+	addItemToStorage(itemText);
 
 	// Render changes to UI
 	renderChangesUI();
@@ -38,6 +40,18 @@ function addItemToDOM(item) {
 	itemList.append(li);
 }
 
+function addItemToStorage(item) {
+	// READ THE STORAGE INFORMATION
+	let itemsFromStorage;
+	!localStorage.getItem('items')
+		? (itemsFromStorage = [])
+		: (itemsFromStorage = JSON.parse(localStorage.getItem('items')));
+	console.log(itemsFromStorage);
+	// ADD TO TEMP STORAGE OBJECT
+	itemsFromStorage.push(item);
+	// CONVERT THE NEW STORAGE DATA TO JSON AND STORE @ LOCALSTORAGE
+	localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+}
 function deleteItem(e) {
 	console.log();
 	if (e.target.parentElement.classList.contains('remove-item')) {
