@@ -8,9 +8,7 @@
 
 &emsp;
 
-#### Link to Project &rarr; [Shoppinglist Project](https://shoppinglist-app-erhan-ertem.netlify.app)
-
-#### Project Preview
+#### [Shoppinglist Project](https://shoppinglist-app-erhan-ertem.netlify.app)
 
 <img src="./screenshot.webp" width="500px"/>
 
