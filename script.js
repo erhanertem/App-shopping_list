@@ -5,6 +5,15 @@ const btnClear = document.getElementById('clear');
 const btnReset = document.getElementById('reset');
 const itemFilter = document.getElementById('filter');
 
+function displayItems() {
+	// Get items from local storage
+	const itemsFromStorage = getItemsFromStorage();
+	itemsFromStorage.forEach((item) => addItemToDOM(item));
+
+	// Render changes to UI
+	renderChangesUI();
+}
+
 function addItem(e) {
 	e.preventDefault();
 	const itemText = itemInput.value.trim();
@@ -42,11 +51,7 @@ function addItemToDOM(item) {
 
 function addItemToStorage(item) {
 	// READ THE STORAGE INFORMATION
-	let itemsFromStorage;
-	!localStorage.getItem('items')
-		? (itemsFromStorage = [])
-		: (itemsFromStorage = JSON.parse(localStorage.getItem('items')));
-	console.log(itemsFromStorage);
+	let itemsFromStorage = getItemsFromStorage();
 	// ADD TO TEMP STORAGE OBJECT
 	itemsFromStorage.push(item);
 	// CONVERT THE NEW STORAGE DATA TO JSON AND STORE @ LOCALSTORAGE
@@ -72,8 +77,8 @@ function renderChangesUI() {
 		btnClear.style.display = 'none';
 		itemFilter.style.display = 'none';
 	} else {
-		btnClear.style.display = 'block';
-		itemFilter.style.display = 'block';
+		btnClear.style.display = '';
+		itemFilter.style.display = '';
 	}
 }
 
@@ -106,12 +111,23 @@ function getList() {
 	itemFilter.value = '';
 }
 
+function getItemsFromStorage() {
+	// READ THE STORAGE INFORMATION
+	let itemsFromStorage;
+	!localStorage.getItem('items')
+		? (itemsFromStorage = [])
+		: (itemsFromStorage = JSON.parse(localStorage.getItem('items')));
+
+	return itemsFromStorage;
+}
+
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', deleteItem);
 btnClear.addEventListener('click', deleteAllItems);
 itemFilter.addEventListener('input', filterItems);
 btnReset.addEventListener('click', getList);
+document.addEventListener('DOMContentLoaded', displayItems);
 
 btnReset.style.display = 'none';
 renderChangesUI();
