@@ -81,9 +81,14 @@ function removeItemsFromStorage(removeItem) {
 function deleteAllItems() {
 	// Delete everything inside the list container
 	itemList.innerHTML = '';
-
+	// Clear localstorage
+	removeAllItemsFromStorage();
 	// Render changes to UI
 	renderChangesUI();
+}
+
+function removeAllItemsFromStorage() {
+	localStorage.removeItem('items');
 }
 
 function renderChangesUI() {
