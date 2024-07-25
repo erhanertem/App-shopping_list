@@ -13,7 +13,6 @@ function displayItems() {
 	// Render changes to UI
 	renderChangesUI();
 }
-
 function addItem(e) {
 	e.preventDefault();
 	const itemText = itemInput.value.trim();
@@ -34,7 +33,6 @@ function addItem(e) {
 	// Clear input field after submission
 	itemInput.value = '';
 }
-
 function addItemToDOM(item) {
 	const li = document.createElement('li');
 	li.textContent = item;
@@ -48,15 +46,6 @@ function addItemToDOM(item) {
 	// Append listItem to the list
 	itemList.append(li);
 }
-
-function addItemToStorage(item) {
-	// READ THE STORAGE INFORMATION
-	let itemsFromStorage = getItemsFromStorage();
-	// ADD TO TEMP STORAGE OBJECT
-	itemsFromStorage.push(item);
-	// CONVERT THE NEW STORAGE DATA TO JSON AND STORE @ LOCALSTORAGE
-	localStorage.setItem('items', JSON.stringify(itemsFromStorage));
-}
 function deleteItem(e) {
 	if (e.target.parentElement.classList.contains('remove-item')) {
 		const removeItem = e.target.closest('li').textContent;
@@ -69,15 +58,6 @@ function deleteItem(e) {
 		}
 	}
 }
-
-function removeItemsFromStorage(removeItem) {
-	// Get items from local storage
-	let items = getItemsFromStorage();
-	// Remove the item from the array and update the local storage
-	newItems = items.filter((el) => el !== removeItem);
-	localStorage.setItem('items', newItems);
-}
-
 function deleteAllItems() {
 	// Delete everything inside the list container
 	itemList.innerHTML = '';
@@ -86,11 +66,6 @@ function deleteAllItems() {
 	// Render changes to UI
 	renderChangesUI();
 }
-
-function removeAllItemsFromStorage() {
-	localStorage.removeItem('items');
-}
-
 function renderChangesUI() {
 	if (itemList.childElementCount === 0) {
 		btnClear.style.display = 'none';
@@ -100,7 +75,6 @@ function renderChangesUI() {
 		itemFilter.style.display = '';
 	}
 }
-
 function filterItems(e) {
 	const filterValue = e.target.value.toLowerCase();
 	let listLength = itemList.children.length;
@@ -117,7 +91,6 @@ function filterItems(e) {
 		}
 	});
 }
-
 function getList() {
 	// Switch btns funcs
 	btnClear.style.display = 'block';
@@ -128,16 +101,6 @@ function getList() {
 
 	// Clear filter field
 	itemFilter.value = '';
-}
-
-function getItemsFromStorage() {
-	// READ THE STORAGE INFORMATION
-	let itemsFromStorage;
-	!localStorage.getItem('items')
-		? (itemsFromStorage = [])
-		: (itemsFromStorage = JSON.parse(localStorage.getItem('items')));
-
-	return itemsFromStorage;
 }
 
 // APP INITIALIZER
@@ -156,3 +119,32 @@ function init() {
 	renderChangesUI();
 }
 init();
+
+// LOCAL STORAGE API
+function removeItemsFromStorage(removeItem) {
+	// Get items from local storage
+	let items = getItemsFromStorage();
+	// Remove the item from the array and update the local storage
+	newItems = items.filter((el) => el !== removeItem);
+	localStorage.setItem('items', newItems);
+}
+function removeAllItemsFromStorage() {
+	localStorage.removeItem('items');
+}
+function getItemsFromStorage() {
+	// READ THE STORAGE INFORMATION
+	let itemsFromStorage;
+	!localStorage.getItem('items')
+		? (itemsFromStorage = [])
+		: (itemsFromStorage = JSON.parse(localStorage.getItem('items')));
+
+	return itemsFromStorage;
+}
+function addItemToStorage(item) {
+	// READ THE STORAGE INFORMATION
+	let itemsFromStorage = getItemsFromStorage();
+	// ADD TO TEMP STORAGE OBJECT
+	itemsFromStorage.push(item);
+	// CONVERT THE NEW STORAGE DATA TO JSON AND STORE @ LOCALSTORAGE
+	localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+}
