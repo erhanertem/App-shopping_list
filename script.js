@@ -13,7 +13,18 @@ function displayItems() {
 	itemsFromStorage.forEach((item) => addItemToDOM(item));
 
 	// Render changes to UI
-	renderChangesUI();
+	resetChangesUI();
+}
+function checkDupEntry(itemText) {
+	// Get items from local storage
+	const itemsFromStorage = getItemsFromStorage();
+	// Check if item already exists
+	if (itemsFromStorage.includes(itemText.trim().toLowerCase())) {
+		itemInput.value = '';
+		alert('Item already exists. Please enter a unique item.');
+		return true;
+	}
+	return false;
 }
 function addItem(e) {
 	e.preventDefault();
@@ -23,18 +34,22 @@ function addItem(e) {
 		alert('Please add an item');
 		return;
 	}
-
+	// GUARD CLAUSE - CHECK ITEM IS DUP OR NOT!
+	if (checkDupEntry(itemText)) {
+		return;
+	}
 	// GUARD CLAUSE - REPLACING (EDITING) ITEM
 	if (isEditMode) {
 		// FIND THE ITEM TAGGED WITH ID EDIT-MODE
 		const editedItem = itemList.querySelector('.edit-mode');
 
+		console.log(editedItem.textContent);
 		// CLEAR THE ENTRY FROM LOCALSTORAGE
-		removeItemsFromStorage(editedItem.textContent);
+		removeItemFromStorage(editedItem.textContent);
 		editedItem.classList.remove('edit-mode');
 		editedItem.remove();
 
-		renderChangesUI();
+		resetChangesUI();
 	}
 
 	// Add item to the DOM
@@ -43,7 +58,7 @@ function addItem(e) {
 	addItemToStorage(itemText);
 
 	// Render changes to UI
-	renderChangesUI();
+	resetChangesUI();
 
 	// Clear input field after submission
 	itemInput.value = '';
@@ -66,10 +81,11 @@ function deleteItem(e) {
 		const removeItem = e.target.closest('li').textContent;
 		if (confirm('Are you sure?')) {
 			// Remove item from local storage and DOM
-			removeItemsFromStorage(removeItem);
+			console.log(removeItem);
+			removeItemFromStorage(removeItem);
 			e.target.closest('li').remove();
 			// Render changes to UI
-			renderChangesUI();
+			resetChangesUI();
 		}
 	} else {
 		setItemToEdit(e.target);
@@ -97,9 +113,9 @@ function deleteAllItems() {
 	// Clear localstorage
 	removeAllItemsFromStorage();
 	// Render changes to UI
-	renderChangesUI();
+	resetChangesUI();
 }
-function renderChangesUI() {
+function resetChangesUI() {
 	// RESET CLR BTN & FILTER FIELD UI
 	if (itemList.childElementCount === 0) {
 		btnClear.style.display = 'none';
@@ -111,7 +127,7 @@ function renderChangesUI() {
 	// RESET BTN CSS
 	formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
 	formBtn.style.backgroundColor = '#333';
-	// RESTE EDITMODE
+	// RESET EDITMODE
 	isEditMode = false;
 }
 function filterItems(e) {
@@ -155,17 +171,19 @@ function init() {
 	// INITIAL FILTER SEARCH RESET BTN CSS STATE
 	btnReset.style.display = 'none';
 	// RENDER UI ELEMENTS (FILTER BAR & RESET BUTTON)
-	renderChangesUI();
+	resetChangesUI();
 }
 init();
 
 // LOCAL STORAGE API
-function removeItemsFromStorage(removeItem) {
+function removeItemFromStorage(removeItem) {
 	// Get items from local storage
 	let items = getItemsFromStorage();
 	// Remove the item from the array and update the local storage
 	newItems = items.filter((el) => el !== removeItem);
-	localStorage.setItem('items', newItems);
+	console.log(newItems);
+
+	localStorage.setItem('items', JSON.stringify(newItems));
 }
 function removeAllItemsFromStorage() {
 	localStorage.removeItem('items');
@@ -183,7 +201,7 @@ function addItemToStorage(item) {
 	// READ THE STORAGE INFORMATION
 	let itemsFromStorage = getItemsFromStorage();
 	// ADD TO TEMP STORAGE OBJECT
-	itemsFromStorage.push(item);
+	itemsFromStorage.push(item.trim().toLowerCase());
 	// CONVERT THE NEW STORAGE DATA TO JSON AND STORE @ LOCALSTORAGE
 	localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
