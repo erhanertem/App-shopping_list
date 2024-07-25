@@ -4,6 +4,7 @@ const itemList = document.getElementById('item-list');
 const btnClear = document.getElementById('clear');
 const btnReset = document.getElementById('reset');
 const itemFilter = document.getElementById('filter');
+const formBtn = itemForm.querySelector('button');
 
 function displayItems() {
 	// Get items from local storage
@@ -56,8 +57,26 @@ function deleteItem(e) {
 			// Render changes to UI
 			renderChangesUI();
 		}
+	} else {
+		setItemToEdit(e.target);
 	}
 }
+
+function setItemToEdit(item) {
+	isEditMode = true;
+
+	// AT EVERY CLICK RESET EDIT-MODE TEMP CLASS ASSIGMENT TO SWITCH BETWEEN ITEMS
+	itemList.querySelectorAll('li').forEach((el) => el.classList.remove('edit-mode'));
+
+	// CHANGE STYLES UPON CLICK
+	item.classList.add('edit-mode'); // item.style.color = '#ccc';
+	formBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Item';
+	formBtn.style.backgroundColor = '#228B22';
+
+	// FILL IN ITEM NAME ON THE INPUT FIELD
+	itemInput.value = item.textContent;
+}
+
 function deleteAllItems() {
 	// Delete everything inside the list container
 	itemList.innerHTML = '';
