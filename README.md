@@ -17,5 +17,3 @@
 ---
 
 ![JS](https://img.shields.io/badge/JavaScript-323330?style=square&logo=javascript&logoColor=F7DF1E)
-
-<details>
