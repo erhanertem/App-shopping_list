@@ -24,6 +24,19 @@ function addItem(e) {
 		return;
 	}
 
+	// GUARD CLAUSE - REPLACING (EDITING) ITEM
+	if (isEditMode) {
+		// FIND THE ITEM TAGGED WITH ID EDIT-MODE
+		const editedItem = itemList.querySelector('.edit-mode');
+
+		// CLEAR THE ENTRY FROM LOCALSTORAGE
+		removeItemsFromStorage(editedItem.textContent);
+		editedItem.classList.remove('edit-mode');
+		editedItem.remove();
+
+		renderChangesUI();
+	}
+
 	// Add item to the DOM
 	addItemToDOM(itemText);
 	// Add item to localstorage
@@ -87,6 +100,7 @@ function deleteAllItems() {
 	renderChangesUI();
 }
 function renderChangesUI() {
+	// RESET CLR BTN & FILTER FIELD UI
 	if (itemList.childElementCount === 0) {
 		btnClear.style.display = 'none';
 		itemFilter.style.display = 'none';
@@ -94,6 +108,11 @@ function renderChangesUI() {
 		btnClear.style.display = '';
 		itemFilter.style.display = '';
 	}
+	// RESET BTN CSS
+	formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+	formBtn.style.backgroundColor = '#333';
+	// RESTE EDITMODE
+	isEditMode = false;
 }
 function filterItems(e) {
 	const filterValue = e.target.value.toLowerCase();
